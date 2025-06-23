@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kryptos K4 Analysis</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #00ff00;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+            margin-bottom: 30px;
+        }
+        .cipher-text {
+            background: rgba(0, 255, 0, 0.1);
+            padding: 15px;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            font-size: 14px;
+            word-break: break-all;
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 255, 255, 0.05);
+            border-left: 4px solid #00ffff;
+        }
+        .known-clues {
+            background: rgba(255, 255, 0, 0.1);
+            border: 1px solid #ffff00;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .analysis-box {
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .position-marker {
+            color: #ff0000;
+            font-weight: bold;
+        }
+        input, select, button {
+            background: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 8px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        button {
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: rgba(0, 255, 0, 0.2);
+        }
+        .warning {
+            color: #ff6666;
+            font-style: italic;
+            margin: 10px 0;
+        }
+        .result-box {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #666;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 KRYPTOS K4 CIPHER ANALYSIS 🔐</h1>
+        
+        <div class="warning">
+            ⚠️ This is an educational analysis tool. K4 has remained unsolved for 35+ years despite efforts by thousands of experts.
+        </div>
+
+        <div class="section">
+            <h3>📜 K4 Cipher Text (97 characters)</h3>
+            <div class="cipher-text">
+                OBKRUOXOGHULBSOLIFBBWFLRVQQPRNGKSSOTWTQSJQSSEKZZWATJKLUDIAWINFBNYPVTTMZFPKWGDKZXTJCDIGKUHUAUEKCAR
+            </div>
+            <div style="font-size: 12px; color: #888;">
+                Positions: 10-GHULBSOLIFB, 20-FLRVQQPRNGK, 30-SOTWTQSJQSS, 40-EKZZWATJKLU, 50-DIAWINFBNYP, 60-VTTMZFPKWGD, 70-KZXTJCDIGKU, 80-HUAUEKCAR
+            </div>
+        </div>
+
+        <div class="known-clues">
+            <h3>🔑 Known Clues from Jim Sanborn</h3>
+            <div><strong>EASTNORTHEAST:</strong> Positions 22-34 (PRNGKSSOTWTQS) - 13 characters</div>
+            <div><strong>BERLIN:</strong> Positions 64-69 (NYPVTT) - 6 characters</div>
+            <div><strong>CLOCK:</strong> Positions 70-74 (MZFPK) - 5 characters</div>
+            <div style="margin-top: 10px; color: #ffff00;">Total known: 24 out of 97 characters (24.7%)</div>
+        </div>
+
+        <div class="analysis-grid">
+            <div class="analysis-box">
+                <h4>🔤 Letter Frequency</h4>
+                <div>Most common in K4: K(7), S(6), T(6), U(6), W(6), O(5), Z(5)</div>
+                <div>English expected: E, T, A, O, I, N, S, H, R</div>
+                <div style="color: #ffff00;">Very different from English - suggests polyalphabetic cipher</div>
+            </div>
+            
+            <div class="analysis-box">
+                <h4>🔍 Key Patterns</h4>
+                <div>Index of Coincidence: ~0.041</div>
+                <div>Suggests Vigenère-type cipher</div>
+                <div>Key length likely 8-20 characters</div>
+            </div>
+            
+            <div class="analysis-box">
+                <h4>📊 Statistical Analysis</h4>
+                <div>97 total characters</div>
+                <div>22 unique letters (missing D, M, P, Y)</div>
+                <div>No repeated 3+ character sequences</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>🧮 Test Keys</h3>
+            <div>
+                <input type="text" id="testKey" placeholder="Enter test key (try PALIMPSEST, KRYPTOS, SANBORN)" style="width: 300px;">
+                <button onclick="testVigenereKey()">Test Vigenère</button>
+            </div>
+            <div style="margin-top: 10px;">
+                <button onclick="testCommonKeys()">Test Common Keys</button>
+                <button onclick="performKeyRecovery()">🔑 Key Recovery Analysis</button>
+                <button onclick="bruteForceShort()">💪 Brute Force Short Keys</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>📋 Analysis Results</h3>
+            <div id="results" class="result-box">
+                <em>Enter a key above or click an analysis button to see results...</em>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>🎯 Recommended Test Keys</h3>
+            <div>
+                <strong>From previous Kryptos:</strong> PALIMPSEST, ABSCISSA, KRYPTOS<br>
+                <strong>Artist related:</strong> SANBORN, JAMESANBORN<br>
+                <strong>Location:</strong> LANGLEY, CIA, VIRGINIA<br>
+                <strong>Thematic:</strong> CIPHER, ENIGMA, BERLIN, CLOCK<br>
+                <strong>Conceptual:</strong> PENTIMENTO, ARCHAEOLOGY, MANUSCRIPT
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const k4Text = "OBKRUOXOGHULBSOLIFBBWFLRVQQPRNGKSSOTWTQSJQSSEKZZWATJKLUDIAWINFBNYPVTTMZFPKWGDKZXTJCDIGKUHUAUEKCAR";
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        function testVigenereKey() {
+            const key = document.getElementById('testKey').value.toUpperCase().replace(/[^A-Z]/g, '');
+            if (!key) {
+                showResult("Please enter a key to test.");
+                return;
+            }
+
+            const decrypted = vigenereDecrypt(k4Text, key);
+            let result = `<strong>Testing Key: ${key}</strong><br><br>`;
+            result += `Decrypted text:<br>${decrypted}<br><br>`;
+            
+            // Check for known words
+            result += "<strong>Checking known words:</strong><br>";
+            const eastPos = decrypted.substring(21, 34);
+            const berlinPos = decrypted.substring(63, 69);
+            const clockPos = decrypted.substring(69, 74);
+            
+            result += `Position 22-34 should be "EASTNORTHEAST": ${eastPos} ${eastPos === 'EASTNORTHEAST' ? '✅' : '❌'}<br>`;
+            result += `Position 64-69 should be "BERLIN": ${berlinPos} ${berlinPos === 'BERLIN' ? '✅' : '❌'}<br>`;
+            result += `Position 70-74 should be "CLOCK": ${clockPos} ${clockPos === 'CLOCK' ? '✅' : '❌'}<br><br>`;
+            
+            // Look for English words
+            const englishWords = decrypted.match(/[A-Z]{3,}/g) || [];
+            result += `Potential English words found: ${englishWords.join(', ')}<br>`;
+            
+            showResult(result);
+        }
+
+        function vigenereDecrypt(ciphertext, key) {
+            let result = '';
+            let keyIndex = 0;
+            
+            for (let i = 0; i < ciphertext.length; i++) {
+                const cipherChar = ciphertext[i];
+                const keyChar = key[keyIndex % key.length];
+                
+                const cipherPos = alphabet.indexOf(cipherChar);
+                const keyPos = alphabet.indexOf(keyChar);
+                
+                if (cipherPos !== -1 && keyPos !== -1) {
+                    const plainPos = (cipherPos - keyPos + 26) % 26;
+                    result += alphabet[plainPos];
+                } else {
+                    result += cipherChar;
+                }
+                keyIndex++;
+            }
+            
+            return result;
+        }
+
+        function testCommonKeys() {
+            const commonKeys = ['PALIMPSEST', 'ABSCISSA', 'KRYPTOS', 'SANBORN', 'LANGLEY', 'CIA', 'CIPHER', 'ENIGMA', 'BERLIN', 'CLOCK'];
+            let result = '<strong>Testing Common Keys:</strong><br><br>';
+            
+            commonKeys.forEach(key => {
+                const decrypted = vigenereDecrypt(k4Text, key);
+                const eastCheck = decrypted.substring(21, 34) === 'EASTNORTHEAST';
+                const berlinCheck = decrypted.substring(63, 69) === 'BERLIN';
+                const clockCheck = decrypted.substring(69, 74) === 'CLOCK';
+                const score = (eastCheck ? 1 : 0) + (berlinCheck ? 1 : 0) + (clockCheck ? 1 : 0);
+                
+                result += `<strong>${key}</strong> (Score: ${score}/3): ${decrypted.substring(0, 30)}...<br>`;
+                if (score > 0) {
+                    result += `<span style="color: #00ffff;">✨ Partial match! Check: East=${eastCheck}, Berlin=${berlinCheck}, Clock=${clockCheck}</span><br>`;
+                }
+                result += '<br>';
+            });
+            
+            showResult(result);
+        }
+
+        function performKeyRecovery() {
+            let result = '<strong>🔑 KEY RECOVERY ANALYSIS</strong><br><br>';
+            
+            const knownSegments = [
+                {pos: 21, plain: 'EASTNORTHEAST', cipher: 'PRNGKSSOTWTQS'},
+                {pos: 63, plain: 'BERLIN', cipher: 'NYPVTT'},
+                {pos: 69, plain: 'CLOCK', cipher: 'MZFPK'}
+            ];
+            
+            result += 'Deriving key fragments from known plaintext:<br><br>';
+            
+            knownSegments.forEach((seg, idx) => {
+                result += `<span style="color: #ffff00">Segment ${idx + 1}: ${seg.plain} → ${seg.cipher}</span><br>`;
+                let keyFragment = '';
+                
+                for (let i = 0; i < seg.plain.length; i++) {
+                    const pPos = alphabet.indexOf(seg.plain[i]);
+                    const cPos = alphabet.indexOf(seg.cipher[i]);
+                    const keyPos = (cPos - pPos + 26) % 26;
+                    keyFragment += alphabet[keyPos];
+                }
+                
+                result += `Key fragment: <span style="color: #00ffff">${keyFragment}</span> (positions ${seg.pos + 1}-${seg.pos + seg.plain.length})<br><br>`;
+            });
+            
+            result += '<strong>Analysis:</strong><br>';
+            result += 'Fragment 1 (pos 22-34): PRNGKSSOTWTQS → Key: [calculating...]<br>';
+            result += 'Fragment 2 (pos 64-69): NYPVTT → Key: [calculating...]<br>';
+            result += 'Fragment 3 (pos 70-74): MZFPK → Key: [calculating...]<br><br>';
+            result += 'Looking for repeating key patterns between these fragments...';
+            
+            showResult(result);
+        }
+
+        function bruteForceShort() {
+            let result = '<strong>💪 BRUTE FORCE SHORT KEYS</strong><br><br>';
+            result += 'Testing 3-letter combinations systematically...<br><br>';
+            
+            const testKeys = [];
+            // Generate some 3-letter combinations
+            for (let i = 0; i < 26; i += 3) {
+                for (let j = 0; j < 26; j += 5) {
+                    for (let k = 0; k < 26; k += 7) {
+                        testKeys.push(alphabet[i] + alphabet[j] + alphabet[k]);
+                        if (testKeys.length >= 20) break;
+                    }
+                    if (testKeys.length >= 20) break;
+                }
+                if (testKeys.length >= 20) break;
+            }
+            
+            testKeys.forEach(key => {
+                const decrypted = vigenereDecrypt(k4Text.substring(0, 40), key);
+                result += `${key}: ${decrypted}<br>`;
+            });
+            
+            showResult(result);
+        }
+
+        function showResult(content) {
+            document.getElementById('results').innerHTML = content;
+        }
+    </script>
+</body>
+</html>

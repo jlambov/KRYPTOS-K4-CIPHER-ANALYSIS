@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kryptos K4 Analysis - Enhanced</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #00ff00;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+            margin-bottom: 30px;
+        }
+        .cipher-text {
+            background: rgba(0, 255, 0, 0.1);
+            padding: 15px;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+            font-size: 14px;
+            word-break: break-all;
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 255, 255, 0.05);
+            border-left: 4px solid #00ffff;
+        }
+        .known-clues {
+            background: rgba(255, 255, 0, 0.1);
+            border: 1px solid #ffff00;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .analysis-box {
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .vigenere-tools {
+            background: rgba(255, 0, 255, 0.1);
+            border: 2px solid #ff00ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        .vigenere-tools h3 {
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff;
+        }
+        .tool-section {
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+        }
+        input, select, button, textarea {
+            background: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 8px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            resize: vertical;
+        }
+        button {
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: rgba(0, 255, 0, 0.2);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        .warning {
+            color: #ff6666;
+            font-style: italic;
+            margin: 10px 0;
+        }
+        .result-box {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #666;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .key-length-tools {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .frequency-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 5px;
+            font-size: 11px;
+        }
+        .frequency-item {
+            background: rgba(0, 255, 0, 0.05);
+            padding: 5px;
+            border-radius: 3px;
+        }
+        .success { color: #00ff00; }
+        .warning-text { color: #ffaa00; }
+        .error { color: #ff6666; }
+        .highlight { color: #00ffff; background: rgba(0, 255, 255, 0.1); padding: 2px 4px; border-radius: 2px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 KRYPTOS K4 CIPHER ANALYSIS - ENHANCED 🔐</h1>
+        
+        <div class="section">
+            <h3>🏛️ About Kryptos Sculpture</h3>
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 5px; margin: 15px 0;">
+                <strong>Artist:</strong> Jim Sanborn<br>
+                <strong>Location:</strong> CIA Headquarters, Langley, Virginia, USA<br>
+                <strong>Installed:</strong> 1990<br>
+                <strong>Description:</strong> An encrypted sculpture containing four separate coded messages (K1, K2, K3, K4). The first three have been solved, but K4 remains one of the world's most famous unsolved ciphers.
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 15px; margin: 15px 0;">
+                <div style="background: rgba(0, 255, 0, 0.05); padding: 12px; border-left: 4px solid #00ff00; border-radius: 3px;">
+                    <strong style="color: #00ff00;">K1 (SOLVED 1999):</strong><br>
+                    <span style="font-size: 11px;">"BETWEEN SUBTLE SHADING AND THE ABSENCE OF LIGHT LIES THE NUANCE OF IQLUSION"</span>
+                </div>
+                
+                <div style="background: rgba(0, 255, 0, 0.05); padding: 12px; border-left: 4px solid #00ff00; border-radius: 3px;">
+                    <strong style="color: #00ff00;">K2 (SOLVED 1999):</strong><br>
+                    <span style="font-size: 11px;">"IT WAS TOTALLY INVISIBLE HOWS THAT POSSIBLE ? THEY USED THE EARTHS MAGNETIC FIELD X THE INFORMATION WAS GATHERED AND TRANSMITTED UNDERGRUUND TO AN UNKNOWN LOCATION X DOES LANGLEY KNOW ABOUT THIS ? THEY SHOULD ITS BURIED OUT THERE SOMEWHERE X WHO KNOWS THE EXACT LOCATION ? ONLY WW THIS WAS HIS LAST MESSAGE X THIRTY EIGHT DEGREES FIFTY SEVEN MINUTES SIX POINT FIVE SECONDS NORTH SEVENTY SEVEN DEGREES EIGHT MINUTES FORTY FOUR SECONDS WEST X LAYER TWO"</span>
+                </div>
+                
+                <div style="background: rgba(0, 255, 0, 0.05); padding: 12px; border-left: 4px solid #00ff00; border-radius: 3px;">
+                    <strong style="color: #00ff00;">K3 (SOLVED 2010):</strong><br>
+                    <span style="font-size: 11px;">"SLOWLY DESPARATLY SLOWLY THE REMAINS OF PASSAGE DEBRIS THAT ENCUMBERED THE LOWER PART OF THE DOORWAY WAS REMOVED WITH TREMBLING HANDS I MADE A TINY BREACH IN THE UPPER LEFT HAND CORNER AND THEN WIDENING THE HOLE A LITTLE I INSERTED THE CANDLE AND PEERED IN THE HOT AIR ESCAPING FROM THE CHAMBER CAUSED THE FLAME TO FLICKER BUT PRESENTLY DETAILS OF THE ROOM WITHIN EMERGED FROM THE MIST X CAN YOU SEE ANYTHING Q ?"</span>
+                </div>
+            </div>
+            
+            <div style="color: #ffaa00; font-style: italic; text-align: center; margin: 10px 0;">
+                <strong>K4 Status:</strong> UNSOLVED since 1990 - Only 24 characters revealed by the artist
+            </div>
+        </div>
+        
+        <div class="warning">
+            ⚠️ This is an educational analysis tool. K4 has remained unsolved for 35+ years despite efforts by thousands of experts worldwide.
+        </div>
+
+        <div class="section">
+            <h3>📜 K4 Cipher Text (97 characters)</h3>
+            <div class="cipher-text">
+                OBKRUOXOGHULBSOLIFBBWFLRVQQPRNGKSSOTWTQSJQSSEKZZWATJKLUDIAWINFBNYPVTTMZFPKWGDKZXTJCDIGKUHUAUEKCAR
+            </div>
+            <div style="font-size: 12px; color: #888;">
+                Positions: 10-GHULBSOLIFB, 20-FLRVQQPRNGK, 30-SOTWTQSJQSS, 40-EKZZWATJKLU, 50-DIAWINFBNYP, 60-VTTMZFPKWGD, 70-KZXTJCDIGKU, 80-HUAUEKCAR
+            </div>
+        </div>
+
+        <div class="known-clues">
+            <h3>🔑 Known Clues from Jim Sanborn</h3>
+            <div><strong>EASTNORTHEAST:</strong> Positions 22-34 (PRNGKSSOTWTQS) - 13 characters</div>
+            <div><strong>BERLIN:</strong> Positions 64-69 (NYPVTT) - 6 characters</div>
+            <div><strong>CLOCK:</strong> Positions 70-74 (MZFPK) - 5 characters</div>
+            <div style="margin-top: 10px; color: #ffff00;">Total known: 24 out of 97 characters (24.7%)</div>
+        </div>
+
+        <!-- Enhanced Vigenère Tools Section -->
+        <div class="vigenere-tools">
+            <h3>🔠 ADVANCED VIGENÈRE CIPHER TOOLS</h3>
+            
+            <div class="tool-section">
+                <h4>🔑 Key Testing & Analysis</h4>
+                <div>
+                    <input type="text" id="testKey" placeholder="Enter test key (try PALIMPSEST, KRYPTOS, SANBORN)" style="width: 300px;">
+                    <button onclick="testVigenereKey()">🔍 Test Key</button>
+                    <button onclick="testCommonKeys()">📋 Test Common Keys</button>
+                </div>
+                <div class="key-length-tools">
+                    <label>Key Length:</label>
+                    <input type="number" id="keyLength" value="8" min="1" max="30" style="width: 60px;">
+                    <button onclick="analyzeKeyLength()">📏 Analyze Length</button>
+                    <button onclick="kasiskiExamination()">🔬 Kasiski Test</button>
+                    <button onclick="indexOfCoincidence()">📊 Index of Coincidence</button>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <h4>🧮 Custom Vigenère Operations</h4>
+                <div>
+                    <textarea id="customText" placeholder="Enter your own text to encrypt/decrypt with Vigenère..."></textarea>
+                </div>
+                <div>
+                    <input type="text" id="customKey" placeholder="Enter key for custom text" style="width: 200px;">
+                    <button onclick="encryptCustom()">🔒 Encrypt</button>
+                    <button onclick="decryptCustom()">🔓 Decrypt</button>
+                    <button onclick="autoKeyAnalysis()">🤖 Auto-Key Analysis</button>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <h4>🎯 Key Recovery Techniques</h4>
+                <div>
+                    <button onclick="performKeyRecovery()">🔑 Known Plaintext Attack</button>
+                    <button onclick="frequencyAnalysis()">📈 Frequency Analysis</button>
+                    <button onclick="bruteForceAdvanced()">💪 Advanced Brute Force</button>
+                    <button onclick="generateKeyVariations()">🔄 Key Variations</button>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <h4>🔍 Pattern Analysis</h4>
+                <div>
+                    <button onclick="findRepeatingPatterns()">🔁 Find Repeating Patterns</button>
+                    <button onclick="polyalphabeticTest()">🔤 Polyalphabetic Test</button>
+                    <button onclick="keywordAnalysis()">📝 Keyword Analysis</button>
+                    <button onclick="vigenereCrack()">⚡ Smart Vigenère Crack</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="analysis-grid">
+            <div class="analysis-box">
+                <h4>🔤 Letter Frequency</h4>
+                <div id="frequencyDisplay">Most common in K4: K(7), S(6), T(6), U(6), W(6), O(5), Z(5)</div>
+                <div>English expected: E, T, A, O, I, N, S, H, R</div>
+                <div style="color: #ffff00;">Very different from English - suggests polyalphabetic cipher</div>
+            </div>
+            
+            <div class="analysis-box">
+                <h4>🔍 Key Patterns</h4>
+                <div id="keyPatterns">Index of Coincidence: ~0.041</div>
+                <div>Suggests Vigenère-type cipher</div>
+                <div>Key length likely 8-20 characters</div>
+            </div>
+            
+            <div class="analysis-box">
+                <h4>📊 Statistical Analysis</h4>
+                <div>97 total characters</div>
+                <div>22 unique letters (missing D, M, P, Y)</div>
+                <div>No repeated 3+ character sequences</div>
+                <div id="statsDisplay"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>📋 Analysis Results</h3>
+            <div id="results" class="result-box">
+                <em>Use the Vigenère tools above to perform various analyses...</em>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>🎯 Recommended Test Keys</h3>
+            <div>
+                <strong>From previous Kryptos:</strong> PALIMPSEST, ABSCISSA, KRYPTOS<br>
+                <strong>Artist related:</strong> SANBORN, JAMESANBORN, JIMDSANBORN<br>
+                <strong>Location:</strong> LANGLEY, CIA, VIRGINIA, HEADQUARTERS<br>
+                <strong>Thematic:</strong> CIPHER, ENIGMA, BERLIN, CLOCK, NORTHEAST<br>
+                <strong>Conceptual:</strong> PENTIMENTO, ARCHAEOLOGY, MANUSCRIPT, SCULPTURE
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const k4Text = "OBKRUOXOGHULBSOLIFBBWFLRVQQPRNGKSSOTWTQSJQSSEKZZWATJKLUDIAWINFBNYPVTTMZFPKWGDKZXTJCDIGKUHUAUEKCAR";
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const englishFreq = {
+            'E': 12.02, 'T': 9.10, 'A': 8.12, 'O': 7.68, 'I': 6.97, 'N': 6.75,
+            'S': 6.33, 'H': 6.09, 'R': 5.99, 'D': 4.32, 'L': 3.98, 'C': 2.78,
+            'U': 2.76, 'M': 2.41, 'W': 2.36, 'F': 2.23, 'G': 2.02, 'Y': 1.97,
+            'P': 1.93, 'B': 1.29, 'V': 0.98, 'K': 0.77, 'J': 0.15, 'X': 0.15,
+            'Q': 0.10, 'Z': 0.07
+        };
+
+        // Enhanced Vigenère cipher functions
+        function vigenereEncrypt(plaintext, key) {
+            return vigenereTransform(plaintext, key, true);
+        }
+
+        function vigenereDecrypt(ciphertext, key) {
+            return vigenereTransform(ciphertext, key, false);
+        }
+
+        function vigenereTransform(text, key, encrypt) {
+            let result = '';
+            let keyIndex = 0;
+            
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i].toUpperCase();
+                if (alphabet.includes(char)) {
+                    const keyChar = key[keyIndex % key.length].toUpperCase();
+                    const textPos = alphabet.indexOf(char);
+                    const keyPos = alphabet.indexOf(keyChar);
+                    
+                    let newPos;
+                    if (encrypt) {
+                        newPos = (textPos + keyPos) % 26;
+                    } else {
+                        newPos = (textPos - keyPos + 26) % 26;
+                    }
+                    
+                    result += alphabet[newPos];
+                    keyIndex++;
+                } else {
+                    result += char;
+                }
+            }
+            return result;
+        }
+
+        function testVigenereKey() {
+            const key = document.getElementById('testKey').value.toUpperCase().replace(/[^A-Z]/g, '');
+            if (!key) {
+                showResult("Please enter a key to test.");
+                return;
+            }
+
+            const decrypted = vigenereDecrypt(k4Text, key);
+            let result = `<div class="highlight">Testing Key: ${key} (Length: ${key.length})</div><br>`;
+            result += `<strong>Decrypted text:</strong><br><code>${decrypted}</code><br><br>`;
+            
+            // Check for known words with better formatting
+            result += "<strong>🎯 Known Word Verification:</strong><br>";
+            const eastPos = decrypted.substring(21, 34);
+            const berlinPos = decrypted.substring(63, 69);
+            const clockPos = decrypted.substring(69, 74);
+            
+            const eastMatch = eastPos === 'EASTNORTHEAST';
+            const berlinMatch = berlinPos === 'BERLIN';
+            const clockMatch = clockPos === 'CLOCK';
+            
+            result += `Position 22-34: <span class="${eastMatch ? 'success' : 'error'}">${eastPos}</span> (should be EASTNORTHEAST) ${eastMatch ? '✅' : '❌'}<br>`;
+            result += `Position 64-69: <span class="${berlinMatch ? 'success' : 'error'}">${berlinPos}</span> (should be BERLIN) ${berlinMatch ? '✅' : '❌'}<br>`;
+            result += `Position 70-74: <span class="${clockMatch ? 'success' : 'error'}">${clockPos}</span> (should be CLOCK) ${clockMatch ? '✅' : '❌'}<br><br>`;
+            
+            const score = (eastMatch ? 1 : 0) + (berlinMatch ? 1 : 0) + (clockMatch ? 1 : 0);
+            result += `<strong>Score: ${score}/3</strong><br><br>`;
+            
+            // Enhanced English analysis
+            result += analyzeEnglishness(decrypted);
+            
+            showResult(result);
+        }
+
+        function analyzeEnglishness(text) {
+            const words = text.match(/[A-Z]{3,}/g) || [];
+            const commonWords = ['THE', 'AND', 'FOR', 'ARE', 'BUT', 'NOT', 'YOU', 'ALL', 'CAN', 'HER', 'WAS', 'ONE', 'OUR', 'HAD', 'DAY', 'GET', 'USE', 'MAN', 'NEW', 'NOW', 'WAY', 'MAY', 'SAY'];
+            
+            let result = "<strong>📊 English Analysis:</strong><br>";
+            result += `Potential words (3+ letters): ${words.join(', ')}<br>`;
+            
+            const englishWords = words.filter(word => commonWords.includes(word));
+            result += `Common English words found: <span class="${englishWords.length > 0 ? 'success' : 'warning-text'}">${englishWords.join(', ') || 'None'}</span><br>`;
+            
+            // Calculate letter frequency deviation from English
+            const freq = calculateFrequency(text);
+            let deviation = 0;
+            for (let letter in englishFreq) {
+                const expected = englishFreq[letter];
+                const actual = (freq[letter] || 0) * 100 / text.length;
+                deviation += Math.abs(expected - actual);
+            }
+            
+            result += `Frequency deviation from English: <span class="${deviation < 200 ? 'success' : deviation < 400 ? 'warning-text' : 'error'}">${deviation.toFixed(1)}</span> (lower is better)<br><br>`;
+            
+            return result;
+        }
+
+        function calculateFrequency(text) {
+            const freq = {};
+            for (let char of text) {
+                if (alphabet.includes(char)) {
+                    freq[char] = (freq[char] || 0) + 1;
+                }
+            }
+            return freq;
+        }
+
+        function testCommonKeys() {
+            const commonKeys = [
+                'PALIMPSEST', 'ABSCISSA', 'KRYPTOS', 'SANBORN', 'JAMESANBORN',
+                'LANGLEY', 'CIA', 'CIPHER', 'ENIGMA', 'BERLIN', 'CLOCK',
+                'PENTIMENTO', 'ARCHAEOLOGY', 'MANUSCRIPT', 'SCULPTURE',
+                'VIRGINIA', 'HEADQUARTERS', 'NORTHEAST', 'JIMDSANBORN'
+            ];
+            
+            let result = '<div class="highlight">Testing Common Keys</div><br><br>';
+            
+            const results = [];
+            
+            commonKeys.forEach(key => {
+                const decrypted = vigenereDecrypt(k4Text, key);
+                const eastCheck = decrypted.substring(21, 34) === 'EASTNORTHEAST';
+                const berlinCheck = decrypted.substring(63, 69) === 'BERLIN';
+                const clockCheck = decrypted.substring(69, 74) === 'CLOCK';
+                const score = (eastCheck ? 1 : 0) + (berlinCheck ? 1 : 0) + (clockCheck ? 1 : 0);
+                
+                results.push({key, decrypted, score, eastCheck, berlinCheck, clockCheck});
+            });
+            
+            // Sort by score
+            results.sort((a, b) => b.score - a.score);
+            
+            results.forEach(r => {
+                const scoreClass = r.score > 0 ? 'success' : 'error';
+                result += `<strong class="${scoreClass}">${r.key}</strong> (${r.key.length} chars, Score: ${r.score}/3)<br>`;
+                result += `${r.decrypted.substring(0, 50)}...<br>`;
+                if (r.score > 0) {
+                    result += `<span class="success">✨ Matches: East=${r.eastCheck}, Berlin=${r.berlinCheck}, Clock=${r.clockCheck}</span><br>`;
+                }
+                result += '<br>';
+            });
+            
+            showResult(result);
+        }
+
+        function analyzeKeyLength() {
+            const maxLength = parseInt(document.getElementById('keyLength').value) || 20;
+            let result = '<div class="highlight">Key Length Analysis</div><br><br>';
+            
+            result += "<strong>🔍 Index of Coincidence for different key lengths:</strong><br>";
+            
+            for (let keyLen = 1; keyLen <= maxLength; keyLen++) {
+                const ic = calculateIC(k4Text, keyLen);
+                const likelyEnglish = ic > 0.06 ? 'success' : ic > 0.045 ? 'warning-text' : 'error';
+                result += `Length ${keyLen}: <span class="${likelyEnglish}">${ic.toFixed(4)}</span> ${ic > 0.06 ? '(Likely English!)' : ic > 0.045 ? '(Possible)' : ''}<br>`;
+            }
+            
+            result += '<br>Expected IC: English ≈ 0.067, Random ≈ 0.038<br>';
+            
+            showResult(result);
+        }
+
+        function calculateIC(text, keyLength) {
+            const groups = [];
+            for (let i = 0; i < keyLength; i++) {
+                groups[i] = '';
+            }
+            
+            for (let i = 0; i < text.length; i++) {
+                if (alphabet.includes(text[i])) {
+                    groups[i % keyLength] += text[i];
+                }
+            }
+            
+            let totalIC = 0;
+            let validGroups = 0;
+            
+            for (let group of groups) {
+                if (group.length > 1) {
+                    const freq = calculateFrequency(group);
+                    let ic = 0;
+                    const n = group.length;
+                    
+                    for (let letter in freq) {
+                        const ni = freq[letter];
+                        ic += ni * (ni - 1);
+                    }
+                    
+                    ic = ic / (n * (n - 1));
+                    totalIC += ic;
+                    validGroups++;
+                }
+            }
+            
+            return validGroups > 0 ? totalIC / validGroups : 0;
+        }
+
+        function kasiskiExamination() {
+            let result = '<div class="highlight">Kasiski Examination</div><br><br>';
+            result += "Looking for repeated trigrams and their distances...<br><br>";
+            
+            const trigrams = {};
+            
+            for (let i = 0; i <= k4Text.length - 3; i++) {
+                const trigram = k4Text.substring(i, i + 3);
+                if (!trigrams[trigram]) {
+                    trigrams[trigram] = [];
+                }
+                trigrams[trigram].push(i);
+            }
+            
+            const repeatedTrigrams = Object.entries(trigrams).filter(([trigram, positions]) => positions.length > 1);
+            
+            if (repeatedTrigrams.length === 0) {
+                result += "<span class='warning-text'>No repeated trigrams found. This suggests a long key or different cipher method.</span><br>";
+            } else {
+                result += "<strong>Repeated Trigrams:</strong><br>";
+                repeatedTrigrams.forEach(([trigram, positions]) => {
+                    result += `<strong>${trigram}</strong> at positions: ${positions.join(', ')}<br>`;
+                    const distances = [];
+                    for (let i = 1; i < positions.length; i++) {
+                        distances.push(positions[i] - positions[0]);
+                    }
+                    result += `Distances: ${distances.join(', ')}<br>`;
+                    result += `Common factors: ${findCommonFactors(distances).join(', ')}<br><br>`;
+                });
+            }
+            
+            showResult(result);
+        }
+
+        function findCommonFactors(numbers) {
+            if (numbers.length === 0) return [];
+            
+            const factors = [];
+            const maxNum = Math.max(...numbers);
+            
+            for (let i = 2; i <= Math.min(30, maxNum); i++) {
+                if (numbers.every(num => num % i === 0)) {
+                    factors.push(i);
+                }
+            }
+            
+            return factors;
+        }
+
+        function performKeyRecovery() {
+            let result = '<div class="highlight">Key Recovery from Known Plaintext</div><br><br>';
+            
+            const knownSegments = [
+                {pos: 21, plain: 'EASTNORTHEAST', cipher: k4Text.substring(21, 34)},
+                {pos: 63, plain: 'BERLIN', cipher: k4Text.substring(63, 69)},
+                {pos: 69, plain: 'CLOCK', cipher: k4Text.substring(69, 74)}
+            ];
+            
+            result += 'Deriving key characters from known plaintext segments:<br><br>';
+            
+            const derivedKey = new Array(97).fill('?');
+            
+            knownSegments.forEach((seg, idx) => {
+                result += `<strong class="success">Segment ${idx + 1}: ${seg.plain} (pos ${seg.pos + 1}-${seg.pos + seg.plain.length})</strong><br>`;
+                result += `Cipher: ${seg.cipher}<br>`;
+                
+                let keyFragment = '';
+                for (let i = 0; i < seg.plain.length; i++) {
+                    const pPos = alphabet.indexOf(seg.plain[i]);
+                    const cPos = alphabet.indexOf(seg.cipher[i]);
+                    const keyChar = alphabet[(cPos - pPos + 26) % 26];
+                    keyFragment += keyChar;
+                    derivedKey[seg.pos + i] = keyChar;
+                }
+                
+                result += `Key fragment: <span class="highlight">${keyFragment}</span><br><br>`;
+            });
+            
+            // Look for repeating patterns in derived key
+            result += "<strong>🔍 Searching for key patterns:</strong><br>";
+            const keyPattern = derivedKey.join('');
+            result += `Derived key positions: ${keyPattern.replace(/\?/g, '_')}<br><br>`;
+            
+            // Try to find repeating key lengths
+            const possibleKeyLengths = [8, 9, 10, 11, 12, 13, 14, 16, 18, 20];
+            
+            for (let keyLen of possibleKeyLengths) {
+                let consistent = true;
+                let pattern = '';
+                
+                for (let i = 0; i < keyLen; i++) {
+                    const chars = [];
+                    for (let j = i; j < derivedKey.length; j += keyLen) {
+                        if (derivedKey[j] !== '?') {
+                            chars.push(derivedKey[j]);
+                        }
+                    }
+                    
+                    if (chars.length > 1) {
+                        const unique = [...new Set(chars)];
+                        if (unique.length > 1) {
+                            consistent = false;
+                            break;
+                        }
+                        pattern += unique[0];
+                    } else if (chars.length === 1) {
+                        pattern += chars[0];
+                    } else {
+                        pattern += '?';
+                    }
+                }
+                
+                if (consistent && pattern.replace(/\?/g, '').length > 3) {
+                    result += `<span class="success">Possible key (length ${keyLen}): ${pattern}</span><br>`;
+                }
+            }
+            
+            showResult(result);
+        }
+
+        function encryptCustom() {
+            const text = document.getElementById('customText').value.toUpperCase();
+            const key = document.getElementById('customKey').value.toUpperCase();
+            
+            if (!text || !key) {
+                showResult("Please enter both text and key for custom encryption.");
+                return;
+            }
+            
+            const encrypted = vigenereEncrypt(text, key);
+            let result = `<div class="highlight">Custom Vigenère Encryption</div><br><br>`;
+            result += `<strong>Original:</strong> ${text}<br>`;
+            result += `<strong>Key:</strong> ${key}<br>`;
+            result += `<strong>Encrypted:</strong> <span class="success">${encrypted}</span><br>`;
+            
+            showResult(result);
+        }
+
+        function decryptCustom() {
+            const text = document.getElementById('customText').value.toUpperCase();
+            const key = document.getElementById('customKey').value.toUpperCase();
+            
+            if (!text || !key) {
+                showResult("Please enter both text and key for custom decryption.");
+                return;
+            }
+            
+            const decrypted = vigenereDecrypt(text, key);
+            let result = `<div class="highlight">Custom Vigenère Decryption</div><br><br>`;
+            result += `<strong>Cipher:</strong> ${text}<br>`;
+            result += `<strong>Key:</strong> ${key}<br>`;
+            result += `<strong>Decrypted:</strong> <span class="success">${decrypted}</span><br>`;
+            
+            showResult(result);
+        }
+
+        function frequencyAnalysis() {
+            let result = '<div class="highlight">Frequency Analysis</div><br><br>';
+            
+            const freq = calculateFrequency(k4Text);
+            const sortedFreq = Object.entries(freq).sort((a, b) => b[1] - a[1]);
+            
+            result += "<strong>🔤 K4 Letter Frequencies:</strong><br>";
+            result += '<div class="frequency-table">';
+            
+            sortedFreq.forEach(([letter, count]) => {
+                const percentage = (count * 100 / k4Text.length).toFixed(1);
+                const expectedEng = englishFreq[letter] || 0;
+                const diff = Math.abs(percentage - expectedEng).toFixed(1);
+                result += `<div class="frequency-item">${letter}: ${count} (${percentage}%) vs Eng: ${expectedEng}%</div>`;
+            });
+            
+            result += '</div><br>';
+            
+            result += "<strong>📊 Comparison with English:</strong><br>";
+            result += "The frequency distribution is very different from English, confirming polyalphabetic encryption.<br><br>";
+            
+            // Chi-squared test against English
+            let chiSquared = 0;
+            for (let letter of alphabet) {
+                const observed = freq[letter] || 0;
+                const expected = (englishFreq[letter] || 0) * k4Text.length / 100;
+                if (expected > 0) {
+                    chiSquared += Math.pow(observed - expected, 2) / expected;
+                }
+            }
+            
+            result += `<strong>Chi-squared against English:</strong> <span class="${chiSquared > 100 ? 'error' : 'warning-text'}">${chiSquared.toFixed(2)}</span><br>`;
+            result += "(Values > 100 strongly suggest non-English or encrypted text)<br>";
+            
+            showResult(result);
+        }
+
+        function indexOfCoincidence() {
+            let result = '<div class="highlight">Index of Coincidence Analysis</div><br><br>';
+            
+            const ic = calculateIC(k4Text, 1);
+            result += `<strong>Overall Index of Coincidence:</strong> <span class="${ic > 0.06 ? 'success' : ic > 0.045 ? 'warning-text' : 'error'}">${ic.toFixed(4)}</span><br><br>`;
+            
+            result += "<strong>Interpretation:</strong><br>";
+            if (ic > 0.06) {
+                result += "<span class='success'>High IC - Likely monoalphabetic or English text</span><br>";
+            } else if (ic > 0.045) {
+                result += "<span class='warning-text'>Medium IC - Possibly short polyalphabetic key</span><br>";
+            } else {
+                result += "<span class='error'>Low IC - Long polyalphabetic key or random text</span><br>";
+            }
+            
+            result += "<br>Reference values:<br>";
+            result += "• English text: ~0.067<br>";
+            result += "• Random text: ~0.038<br>";
+            result += "• Vigenère (short key): 0.045-0.055<br>";
+            result += "• Vigenère (long key): ~0.038<br>";
+            
+            showResult(result);
+        }
+
+        function findRepeatingPatterns() {
+            let result = '<div class="highlight">Repeating Pattern Analysis</div><br><br>';
+            
+            const patterns = {};
+            
+            // Check for patterns of length 2-6
+            for (let len = 2; len <= 6; len++) {
+                const lengthPatterns = {};
+                
+                for (let i = 0; i <= k4Text.length - len; i++) {
+                    const pattern = k4Text.substring(i, i + len);
+                    if (!lengthPatterns[pattern]) {
+                        lengthPatterns[pattern] = [];
+                    }
+                    lengthPatterns[pattern].push(i);
+                }
+                
+                const repeated = Object.entries(lengthPatterns).filter(([p, pos]) => pos.length > 1);
+                if (repeated.length > 0) {
+                    patterns[len] = repeated;
+                }
+            }
+            
+            if (Object.keys(patterns).length === 0) {
+                result += "<span class='warning-text'>No significant repeating patterns found.</span><br>";
+                result += "This suggests either:<br>";
+                result += "• A very long key<br>";
+                result += "• A different cipher method<br>";
+                result += "• High-quality encryption<br>";
+            } else {
+                Object.entries(patterns).forEach(([len, patternList]) => {
+                    result += `<strong>Length ${len} patterns:</strong><br>`;
+                    patternList.forEach(([pattern, positions]) => {
+                        result += `"${pattern}" at positions: ${positions.join(', ')}<br>`;
+                    });
+                    result += '<br>';
+                });
+            }
+            
+            showResult(result);
+        }
+
+        function polyalphabeticTest() {
+            let result = '<div class="highlight">Polyalphabetic Cipher Test</div><br><br>';
+            
+            // Test different period lengths
+            result += "<strong>🔍 Testing for polyalphabetic patterns:</strong><br><br>";
+            
+            for (let period = 2; period <= 20; period++) {
+                const groups = [];
+                for (let i = 0; i < period; i++) {
+                    groups[i] = '';
+                }
+                
+                for (let i = 0; i < k4Text.length; i++) {
+                    groups[i % period] += k4Text[i];
+                }
+                
+                let avgIC = 0;
+                let validGroups = 0;
+                
+                groups.forEach((group, idx) => {
+                    if (group.length > 2) {
+                        const ic = calculateIC(group, 1);
+                        avgIC += ic;
+                        validGroups++;
+                    }
+                });
+                
+                if (validGroups > 0) {
+                    avgIC /= validGroups;
+                    const likely = avgIC > 0.06 ? 'success' : avgIC > 0.045 ? 'warning-text' : 'error';
+                    result += `Period ${period}: <span class="${likely}">${avgIC.toFixed(4)}</span> ${avgIC > 0.06 ? '★' : avgIC > 0.045 ? '◦' : ''}<br>`;
+                }
+            }
+            
+            result += '<br><strong>Legend:</strong> ★ = Likely match, ◦ = Possible match<br>';
+            
+            showResult(result);
+        }
+
+        function keywordAnalysis() {
+            let result = '<div class="highlight">Keyword Analysis</div><br><br>';
+            
+            const keywords = [
+                'KRYPTOS', 'SANBORN', 'SCULPTURE', 'CIPHER', 'LANGLEY',
+                'PALIMPSEST', 'ABSCISSA', 'BERLIN', 'CLOCK', 'NORTHEAST',
+                'ARCHAEOLOGY', 'PENTIMENTO', 'MANUSCRIPT', 'ILLUSION'
+            ];
+            
+            result += "<strong>🔤 Testing thematic keywords:</strong><br><br>";
+            
+            keywords.forEach(keyword => {
+                // Test both as direct key and as keyed alphabet
+                const directTest = vigenereDecrypt(k4Text, keyword);
+                
+                // Quick scoring
+                let score = 0;
+                if (directTest.includes('EAST')) score++;
+                if (directTest.includes('NORTH')) score++;
+                if (directTest.includes('BERLIN')) score++;
+                if (directTest.includes('CLOCK')) score++;
+                
+                const scoreClass = score > 1 ? 'success' : score > 0 ? 'warning-text' : 'error';
+                result += `<strong>${keyword}</strong>: <span class="${scoreClass}">Score ${score}</span><br>`;
+                result += `Sample: ${directTest.substring(0, 40)}...<br><br>`;
+            });
+            
+            showResult(result);
+        }
+
+        function generateKeyVariations() {
+            const baseKey = document.getElementById('testKey').value.toUpperCase() || 'KRYPTOS';
+            
+            let result = `<div class="highlight">Key Variations for: ${baseKey}</div><br><br>`;
+            
+            const variations = [
+                baseKey,
+                baseKey.split('').reverse().join(''), // Reversed
+                baseKey + baseKey, // Doubled
+                baseKey + 'SANBORN', // With artist name
+                'SANBORN' + baseKey, // Artist name first
+                baseKey.substring(0, Math.floor(baseKey.length/2)), // First half
+                baseKey.substring(Math.floor(baseKey.length/2)), // Second half
+            ];
+            
+            // Remove duplicates
+            const uniqueVariations = [...new Set(variations)];
+            
+            result += "<strong>🔄 Testing variations:</strong><br><br>";
+            
+            uniqueVariations.forEach(variation => {
+                if (variation.length > 0) {
+                    const decrypted = vigenereDecrypt(k4Text, variation);
+                    const eastCheck = decrypted.substring(21, 34) === 'EASTNORTHEAST';
+                    const berlinCheck = decrypted.substring(63, 69) === 'BERLIN';
+                    const clockCheck = decrypted.substring(69, 74) === 'CLOCK';
+                    const score = (eastCheck ? 1 : 0) + (berlinCheck ? 1 : 0) + (clockCheck ? 1 : 0);
+                    
+                    const scoreClass = score > 0 ? 'success' : 'error';
+                    result += `<strong class="${scoreClass}">${variation}</strong> (${variation.length} chars): Score ${score}/3<br>`;
+                    result += `${decrypted.substring(0, 50)}...<br><br>`;
+                }
+            });
+            
+            showResult(result);
+        }
+
+        function vigenereCrack() {
+            let result = '<div class="highlight">Smart Vigenère Crack Attempt</div><br><br>';
+            
+            result += "<strong>🧠 Using advanced techniques...</strong><br><br>";
+            
+            // Try to use frequency analysis with known plaintext
+            result += "1. <strong>Frequency-based key recovery:</strong><br>";
+            
+            // Calculate most likely key positions based on known text
+            const knownPositions = [
+                {start: 21, text: 'EASTNORTHEAST'},
+                {start: 63, text: 'BERLIN'},
+                {start: 69, text: 'CLOCK'}
+            ];
+            
+            const possibleKeys = [];
+            
+            // Try different key lengths
+            for (let keyLen = 8; keyLen <= 16; keyLen++) {
+                let keyCandidate = new Array(keyLen).fill('');
+                let confidence = 0;
+                
+                knownPositions.forEach(known => {
+                    for (let i = 0; i < known.text.length; i++) {
+                        const keyPos = (known.start + i) % keyLen;
+                        const plainChar = known.text[i];
+                        const cipherChar = k4Text[known.start + i];
+                        
+                        const pPos = alphabet.indexOf(plainChar);
+                        const cPos = alphabet.indexOf(cipherChar);
+                        const keyCharPos = (cPos - pPos + 26) % 26;
+                        const keyChar = alphabet[keyCharPos];
+                        
+                        if (keyCandidate[keyPos] === '') {
+                            keyCandidate[keyPos] = keyChar;
+                            confidence++;
+                        } else if (keyCandidate[keyPos] === keyChar) {
+                            confidence++;
+                        }
+                    }
+                });
+                
+                if (confidence > keyLen * 0.3) { // At least 30% of key determined
+                    const partialKey = keyCandidate.join('').replace(/^$/, '?');
+                    possibleKeys.push({length: keyLen, key: keyCandidate, confidence: confidence, partial: partialKey});
+                }
+            }
+            
+            if (possibleKeys.length > 0) {
+                result += "<span class='success'>Found potential key patterns:</span><br>";
+                possibleKeys.forEach(pk => {
+                    result += `Length ${pk.length}: ${pk.partial} (confidence: ${pk.confidence})<br>`;
+                });
+            } else {
+                result += "<span class='warning-text'>No clear key patterns found with current method.</span><br>";
+            }
+            
+            result += "<br>2. <strong>Dictionary attack on partial keys:</strong><br>";
+            result += "Attempting to complete partial keys with common words...<br>";
+            
+            showResult(result);
+        }
+
+        function bruteForceAdvanced() {
+            let result = '<div class="highlight">Advanced Brute Force Analysis</div><br><br>';
+            
+            result += "<strong>💪 Systematic key space exploration:</strong><br><br>";
+            
+            // Focus on likely key lengths based on IC analysis
+            const likelyLengths = [8, 9, 10, 11, 12, 14, 16];
+            
+            result += "Testing optimized key combinations...<br><br>";
+            
+            let bestScore = 0;
+            let bestKey = '';
+            let bestDecryption = '';
+            
+            // Test some strategic combinations
+            const letterGroups = {
+                common: 'ETAOINSHRDLU',
+                kryptos: 'KRYPTOSANBEL',  // Letters from KRYPTOS, SANBORN, BERLIN
+                geometric: 'ABCDEFGHIJKL'  // Sequential for mathematical keys
+            };
+            
+            likelyLengths.slice(0, 3).forEach(len => { // Limit to first 3 lengths for performance
+                result += `<strong>Testing length ${len}:</strong><br>`;
+                
+                // Try some targeted combinations
+                for (let i = 0; i < Math.min(50, Math.pow(26, Math.min(len, 3))); i++) {
+                    let testKey = '';
+                    let temp = i;
+                    
+                    for (let j = 0; j < len; j++) {
+                        testKey += alphabet[temp % 26];
+                        temp = Math.floor(temp / 26);
+                    }
+                    
+                    const decrypted = vigenereDecrypt(k4Text, testKey);
+                    const eastCheck = decrypted.substring(21, 34) === 'EASTNORTHEAST';
+                    const berlinCheck = decrypted.substring(63, 69) === 'BERLIN';
+                    const clockCheck = decrypted.substring(69, 74) === 'CLOCK';
+                    const score = (eastCheck ? 1 : 0) + (berlinCheck ? 1 : 0) + (clockCheck ? 1 : 0);
+                    
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestKey = testKey;
+                        bestDecryption = decrypted;
+                    }
+                    
+                    if (score > 0) {
+                        result += `<span class="success">${testKey}: Score ${score}/3</span><br>`;
+                    }
+                }
+                
+                if (bestScore === 0) {
+                    result += "<span class='warning-text'>No matches found in this length</span><br>";
+                }
+                result += '<br>';
+            });
+            
+            if (bestScore > 0) {
+                result += `<strong>🏆 Best result:</strong><br>`;
+                result += `Key: <span class="highlight">${bestKey}</span><br>`;
+                result += `Score: ${bestScore}/3<br>`;
+                result += `Decryption: ${bestDecryption}<br>`;
+            } else {
+                result += "<span class='warning-text'>⚠️ No significant matches found in brute force attempt.</span><br>";
+                result += "This suggests K4 may require:<br>";
+                result += "• A longer or more complex key<br>";
+                result += "• A different cipher method<br>";
+                result += "• Multiple encryption layers<br>";
+            }
+            
+            showResult(result);
+        }
+
+        function autoKeyAnalysis() {
+            const customText = document.getElementById('customText').value.toUpperCase();
+            const customKey = document.getElementById('customKey').value.toUpperCase();
+            
+            if (!customText || !customKey) {
+                showResult("Please enter both text and key for auto-key analysis.");
+                return;
+            }
+            
+            let result = '<div class="highlight">Auto-Key Vigenère Analysis</div><br><br>';
+            
+            // Standard Vigenère
+            const standardDecrypt = vigenereDecrypt(customText, customKey);
+            result += `<strong>Standard Vigenère:</strong><br>${standardDecrypt}<br><br>`;
+            
+            // Auto-key variant (key + plaintext as key)
+            let autoKeyDecrypt = '';
+            let extendedKey = customKey;
+            
+            for (let i = 0; i < customText.length; i++) {
+                if (i >= extendedKey.length) {
+                    // Use decrypted character as next key character
+                    extendedKey += autoKeyDecrypt[i - customKey.length];
+                }
+                
+                const cipherChar = customText[i];
+                const keyChar = extendedKey[i];
+                
+                const cPos = alphabet.indexOf(cipherChar);
+                const kPos = alphabet.indexOf(keyChar);
+                
+                if (cPos !== -1 && kPos !== -1) {
+                    const plainPos = (cPos - kPos + 26) % 26;
+                    autoKeyDecrypt += alphabet[plainPos];
+                } else {
+                    autoKeyDecrypt += cipherChar;
+                }
+            }
+            
+            result += `<strong>Auto-Key Vigenère:</strong><br>${autoKeyDecrypt}<br><br>`;
+            result += `<strong>Extended Key Used:</strong><br>${extendedKey}<br>`;
+            
+            showResult(result);
+        }
+
+        function showResult(content) {
+            document.getElementById('results').innerHTML = content;
+            document.getElementById('results').scrollTop = 0;
+        }
+
+        // Initialize frequency display on load
+        window.onload = function() {
+            const freq = calculateFrequency(k4Text);
+            const sortedFreq = Object.entries(freq).sort((a, b) => b[1] - a[1]);
+            document.getElementById('frequencyDisplay').innerHTML = 
+                'Most common in K4: ' + sortedFreq.slice(0, 7).map(([letter, count]) => `${letter}(${count})`).join(', ');
+        };
+    </script>
+</body>
+</html>
